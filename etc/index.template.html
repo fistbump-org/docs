@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>fbd | Fistbump Node</title>
+<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="Fistbump" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<button class="menu-btn" id="menuBtn">&#9776;</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-hdr">
+    <svg class="sidebar-logo" width="28" height="28" viewBox="-100 -100 1224 1224" xmlns="http://www.w3.org/2000/svg">
+      <rect x="-100" y="-100" width="1224" height="1224" rx="220" fill="white"/>
+      <g transform="matrix(1.69935,0,0,1.69935,-337.675,-337.675)">
+        <path d="M362,664.616L391.107,575.58L589.761,575.58L597.951,550.384L717.331,550.384L680.011,664.616L362,664.616ZM668.125,335.384L788.125,335.384L721.215,540.384L601.216,540.384L668.125,335.384ZM460.556,565.384L535.625,335.384L655.625,335.384L580.573,565.384L460.556,565.384ZM328.056,565.384L403.125,335.384L523.125,335.384L448.057,565.384L328.056,565.384ZM270.625,335.384L390.625,335.384L331.876,515.384L211.875,515.384L270.625,335.384Z" fill="black" fill-rule="nonzero"/>
+      </g>
+    </svg>
+    <h1>fbd <span>docs</span></h1>
+  </div>
+  <div class="search-wrap">
+    <input type="text" id="search" placeholder="Search methods... ( / )">
+  </div>
+  <nav class="sidebar-nav" id="nav">
+    <div class="nav-cat">Guide</div>
+    <a class="nav-link guide-link" href="#about">About</a>
+    <a class="nav-link guide-link" href="#download">Download</a>
+    <a class="nav-link guide-link" href="#install">Build from source</a>
+    <a class="nav-link guide-link" href="#config">Configuration</a>
+    <a class="nav-link guide-link" href="#networks">Networks</a>
+    <a class="nav-link guide-link" href="#rpc">RPC</a>
+    <a class="nav-link guide-link" href="#auth">Auth</a>
+    <a class="nav-link guide-link" href="#wallets">Wallets</a>
+    <a class="nav-link guide-link" href="#subdomains">Subdomains</a>
+    <div class="nav-divider"></div>
+  </nav>
+</aside>
+
+<main class="main">
+
+<div class="guide" id="guide">
+
+<h2 id="about">About</h2>
+<p><strong>fbd</strong> is a <a href="https://fistbump.org">Fistbump</a> full node written in Swift, built by <a href="https://github.com/eskimo">eskimo</a>.</p>
+<p>Read the <a href="https://fistbump.org/fistbump.txt">whitepaper</a>, browse the <a href="https://explorer.fistbump.org">block explorer</a>, or view the <a href="https://github.com/fistbump-org/fbd">source code</a>.</p>
+
+<h2 id="download">Download</h2>
+
+<h3>Quick install (Linux/macOS)</h3>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">curl</span> <span class="flag">-sS</span> https://install.fbd.dev | <span class="cmd">sudo</span> bash</code></div></div>
+
+<h3>Manual download</h3>
+<p>Pre-built binaries for <code>fbd</code> and <code>fbdctl</code>. Extract and run.</p>
+
+<table>
+  <thead><tr><th>Platform</th><th>Download</th></tr></thead>
+  <tbody>
+    <tr><td>macOS</td><td><a href="/download/fbd-latest-macos.zip">fbd-latest-macos.zip</a></td></tr>
+    <tr><td>Linux x86_64</td><td><a href="/download/fbd-latest-linux-x86_64.zip">fbd-latest-linux-x86_64.zip</a></td></tr>
+    <tr><td>Windows</td><td><a href="/download/fbd-latest-windows.zip">fbd-latest-windows.zip</a></td></tr>
+  </tbody>
+</table>
+
+<h2 id="install">Build from source</h2>
+
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">git clone</span> https://github.com/fistbump-org/fbd.git
+<span class="t-prompt">$</span><span class="cmd">cd</span> fbd</code></div></div>
+
+<h3>macOS</h3>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">./install/macos.sh</span></code></div></div>
+
+<h3>Linux</h3>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">./install/linux.sh</span></code></div></div>
+
+<h3>Windows</h3>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">powershell</span> -ExecutionPolicy Bypass -File install\windows.ps1</code></div></div>
+
+<p>macOS, Linux, Windows. Each script installs dependencies, builds, and installs <code>fbd</code> and <code>fbdctl</code>.</p>
+
+<h2 id="config">Configuration</h2>
+
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">fbd</span> <span class="flag">--network</span> <span class="val">main</span> <span class="flag">--host</span> <span class="val">0.0.0.0</span> <span class="flag">--log-level</span> <span class="val">debug</span> <span class="flag">--index-tx</span></code></div></div>
+
+<table>
+  <thead><tr><th>Flag</th><th>Description</th><th>Default</th></tr></thead>
+  <tbody>
+    <tr><td><code>--network</code>, <code>-n</code></td><td>main, testnet, regtest, simnet</td><td><code>main</code></td></tr>
+    <tr><td><code>--datadir</code>, <code>-d</code></td><td>Data directory</td><td><code>~/.fbd</code> (macOS/Linux), <code>%LOCALAPPDATA%\fbd</code> (Windows)</td></tr>
+    <tr><td><code>--host</code></td><td>P2P listen address</td><td><code>127.0.0.1</code></td></tr>
+    <tr><td><code>--port</code>, <code>-p</code></td><td>P2P port</td><td>network default</td></tr>
+    <tr><td><code>--max-outbound</code></td><td>Max outbound peers</td><td><code>8</code></td></tr>
+    <tr><td><code>--max-inbound</code></td><td>Max inbound peers</td><td><code>64</code></td></tr>
+    <tr><td><code>--seeds</code></td><td>Additional seed peers</td><td></td></tr>
+    <tr><td><code>--nodes</code></td><td>Connect only to these peers</td><td></td></tr>
+    <tr><td><code>--agent</code></td><td>User agent suffix</td><td></td></tr>
+    <tr><td><code>--rpc-host</code></td><td>RPC listen address</td><td><code>127.0.0.1</code></td></tr>
+    <tr><td><code>--rpc-port</code></td><td>RPC port</td><td>network default</td></tr>
+    <tr><td><code>--api-key</code></td><td>RPC API key</td><td>auto-generated</td></tr>
+    <tr><td><code>--no-auth</code></td><td>Disable RPC auth</td><td><code>false</code></td></tr>
+    <tr><td><code>--ns-host</code></td><td>DNS listen address</td><td><code>127.0.0.1</code></td></tr>
+    <tr><td><code>--ns-port</code></td><td>DNS port</td><td>network default</td></tr>
+    <tr><td><code>--miner-address</code></td><td>Coinbase payout address</td><td></td></tr>
+    <tr><td><code>--miner-threads</code></td><td>CPU miner threads (0 = auto, max = cores - 1)</td><td><code>0</code></td></tr>
+    <tr><td><code>--log-level</code></td><td>trace, debug, info, warning, error</td><td><code>info</code></td></tr>
+    <tr><td><code>--index-tx</code></td><td>Transaction index for historical lookups</td><td><code>false</code></td></tr>
+    <tr><td><code>--index-address</code></td><td>Address index for lookups by address</td><td><code>false</code></td></tr>
+    <tr><td><code>--index-auctions</code></td><td>Auction index for bid history</td><td><code>false</code></td></tr>
+  </tbody>
+</table>
+
+<h3>Config file</h3>
+<p><code>&lt;datadir&gt;/fbd.conf</code> &mdash; CLI flags override config values.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="key">network</span>       = <span class="val">main</span>
+<span class="key">host</span>          = <span class="val">0.0.0.0</span>
+<span class="key">nodes</span>         = <span class="val">1.2.3.4:32867, 5.6.7.8:32867</span>
+<span class="key">log-level</span>     = <span class="val">debug</span>
+<span class="key">index-tx</span>      = <span class="val">true</span></code></div></div>
+
+<h2 id="networks">Networks</h2>
+<table>
+  <thead><tr><th>Network</th><th>P2P</th><th>Brontide</th><th>RPC</th><th>DNS</th><th>HRP</th></tr></thead>
+  <tbody>
+    <tr><td>main</td><td>32867</td><td>32868</td><td>32869</td><td>32870</td><td><code>fb</code></td></tr>
+    <tr><td>testnet</td><td>42867</td><td>42868</td><td>42869</td><td>42870</td><td><code>ft</code></td></tr>
+    <tr><td>regtest</td><td>52867</td><td>52868</td><td>52869</td><td>52870</td><td><code>fr</code></td></tr>
+    <tr><td>simnet</td><td>62867</td><td>62868</td><td>62869</td><td>62870</td><td><code>fs</code></td></tr>
+  </tbody>
+</table>
+
+<h2 id="rpc">RPC</h2>
+
+<h3>fbdctl</h3>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">fbdctl</span> <span class="val">getblockcount</span></code></div></div>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{
+  <span class="key">"result"</span>: <span class="val">318614</span>,
+  <span class="key">"error"</span>: <span class="cm">null</span>
+}</code></div></div>
+
+<h3>curl</h3>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">curl</span> <span class="flag">-s</span> http://127.0.0.1:32869/ \
+  <span class="flag">-X</span> POST \
+  <span class="flag">-u</span> <span class="str">"x:YOUR_API_KEY"</span> \
+  <span class="flag">-d</span> <span class="str">'{"method":"getblockcount","params":[],"id":1}'</span></code></div></div>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{
+  <span class="key">"result"</span>: <span class="val">318614</span>,
+  <span class="key">"error"</span>: <span class="cm">null</span>,
+  <span class="key">"id"</span>: <span class="val">1</span>
+}</code></div></div>
+
+<div class="note">
+  <code>curl</code> returns standard JSON-RPC with an extra <code>id</code> field.
+  Examples below show the result value only.
+</div>
+
+<h2 id="auth">Auth</h2>
+<p>A random key is generated on startup at <code>&lt;datadir&gt;/.cookie</code>. <code>fbdctl</code> reads it automatically.</p>
+<ul>
+  <li><code>--api-key mykey</code> &mdash; set a fixed key on both <code>fbd</code> and <code>fbdctl</code></li>
+  <li><code>--no-auth</code> &mdash; disable auth entirely</li>
+</ul>
+<p>HTTP Basic auth: username <code>x</code>, password is the key.</p>
+
+<h2 id="wallets">Wallets</h2>
+<p>Wallet commands require <code>--wallet &lt;name&gt;</code>. Auto-selected if only one wallet exists.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">fbdctl</span> <span class="flag">--wallet</span> <span class="val">main</span> getbalance</code></div></div>
+<p>Methods tagged <span class="tag tag-w">wallet required</span> need this flag.</p>
+
+<h2 id="subdomains">Subdomains</h2>
+<p>Fistbump supports <strong>on-chain subdomains</strong> &mdash; names like <code>example.fistbump</code> that are registered and resolved entirely on the blockchain. Subdomains go through the same auction process as top-level names.</p>
+
+<h3>Enabling subdomains</h3>
+<p>A name owner must explicitly opt in by setting the <code>auctionSubdomains</code> flag via <code>sendupdate</code>:</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">fbdctl</span> sendupdate fistbump <span class="str">'{"records":[]}'</span> <span class="flag">--flags</span> <span class="val">1</span></code></div></div>
+<p>Once enabled, this flag is <strong>permanent</strong> &mdash; it cannot be revoked and persists through name expiration and re-registration.</p>
+
+<div class="note">
+  Delegation records (DS, NS, GLUE4, GLUE6, SYNTH4, SYNTH6) and SUB records cannot coexist with <code>auctionSubdomains</code>. You must remove all delegation and SUB records before enabling subdomain auctions, and you cannot add them after enabling.
+</div>
+
+<h3>Registering a subdomain</h3>
+<p>Once the parent has <code>auctionSubdomains</code> enabled, anyone can open an auction for a subdomain:</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">fbdctl</span> sendopen example.fistbump</code></div></div>
+<p>The node automatically detects the parent name, verifies that subdomains are allowed, and includes the <code>parentHash</code> (SHA3-256 of the parent name) in the covenant. Bidding and registration follow the same auction flow as top-level names.</p>
+
+<h3>Payment splitting</h3>
+<p>When a subdomain is registered, the winning bid is split:</p>
+<ul>
+  <li><strong>50%</strong> &mdash; burned (same as top-level names)</li>
+  <li><strong>25%</strong> &mdash; paid to ancestor name owners (split equally up the chain)</li>
+  <li><strong>25%</strong> &mdash; dev fund</li>
+</ul>
+
+<h3>Name rules</h3>
+<ul>
+  <li>Each label: 1&ndash;63 bytes, lowercase ASCII, hyphens allowed (not leading/trailing)</li>
+  <li>Total name: 1&ndash;253 bytes (including dots)</li>
+  <li>Punycode labels (e.g. <code>xn--5p9h</code>) are valid</li>
+  <li>Subdomains can themselves enable <code>auctionSubdomains</code> for deeper nesting</li>
+</ul>
+
+<h3>Inline subdomain records (SUB)</h3>
+<p>As an alternative to subdomain auctions, name owners can define subdomains directly in their resource data using <strong>SUB records</strong>. A SUB record contains a single label and a set of nested records:</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">fbdctl</span> sendupdate fistbump <span class="str">'{"records":[{"type":"SUB","name":"www","records":[{"type":"A","address":"1.2.3.4"}]}]}'</span></code></div></div>
+<p>This creates a <code>www.fistbump</code> subdomain that resolves to <code>1.2.3.4</code>, without any auction. The owner retains full control and can update or remove SUB records at any time. SUB records and <code>auctionSubdomains</code> are mutually exclusive &mdash; you cannot use inline subdomains and subdomain auctions on the same name.</p>
+
+<h3>DNS resolution</h3>
+<p>The built-in DNS server resolves subdomains using progressive lookup: it first tries the full name (<code>example.fistbump</code>), then strips the leftmost label to check the parent. If the parent has a matching SUB record, those nested records are returned. If the subdomain exists as its own on-chain name with resource records, those are returned directly. If neither exists, the parent's NS records are returned as a referral.</p>
+
+<h3>DANE / TLSA</h3>
+<p>TLSA records are stored on-chain with port and protocol fields. The DNS server synthesizes standard DANE owner names:</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">dig</span> <span class="val">@127.0.0.1</span> <span class="flag">-p</span> <span class="val">32870</span> TLSA _443._tcp.fistbump</code></div></div>
+<p>This works for both top-level names and subdomains.</p>
+
+<h3>Querying subdomain info</h3>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">fbdctl</span> getnameinfo example.fistbump</code></div></div>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{
+  <span class="key">"name"</span>: <span class="str">"example.fistbump"</span>,
+  <span class="key">"parentHash"</span>: <span class="str">"b9c3..."</span>,
+  <span class="key">"flags"</span>: <span class="val">0</span>,
+  <span class="key">"auctionSubdomains"</span>: <span class="cm">false</span>,
+  ...
+}</code></div></div>
+
+</div>
+
+
+<div id="methods"></div>
+
+</main>
+
+<script id="api-data" type="application/json">%%API_DATA%%</script>
+<script src="app.js"></script>
+</body>
+</html>

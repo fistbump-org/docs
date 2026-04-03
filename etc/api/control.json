@@ -1,0 +1,63 @@
+{
+  "id": "control",
+  "label": "Control",
+  "description": "Node lifecycle.",
+  "methods": [
+    {
+      "name": "stop",
+      "description": "Gracefully shut down the node.",
+      "wallet": "no",
+      "params": [],
+      "response": [
+        {
+          "name": "(string)",
+          "type": "string",
+          "description": "Confirmation message."
+        }
+      ],
+      "example": {
+        "request": "fbdctl stop",
+        "response": "Stopping node..."
+      }
+    },
+    {
+      "name": "getprotocolparams",
+      "description": "Returns protocol timing and fee parameters for the current network.",
+      "wallet": "no",
+      "params": [],
+      "response": [
+        {"name": "openPeriod", "type": "int", "description": "Blocks in the opening phase."},
+        {"name": "biddingPeriod", "type": "int", "description": "Blocks in the bidding phase."},
+        {"name": "revealPeriod", "type": "int", "description": "Blocks in the reveal phase."},
+        {"name": "registerDeadline", "type": "int", "description": "Blocks after reveal end before unregistered names expire."},
+        {"name": "renewalWindow", "type": "int", "description": "Blocks before a registered name expires without renewal."},
+        {"name": "renewalPeriod", "type": "int", "description": "Minimum blocks between renewals."},
+        {"name": "renewalMaturity", "type": "int", "description": "Blocks after registration before first renewal is needed."},
+        {"name": "transferLockup", "type": "int", "description": "Blocks before a transfer can be finalized."},
+        {"name": "auctionMaturity", "type": "int", "description": "Blocks after revoke before name can be re-auctioned."},
+        {"name": "coinbaseMaturity", "type": "int", "description": "Confirmations before coinbase output is spendable."},
+        {"name": "blockTimeSeconds", "type": "int", "description": "Target block time in seconds."},
+        {"name": "registrationBurnPercent", "type": "int", "description": "Percentage of registration price burned."},
+        {"name": "renewalFeePercent", "type": "int", "description": "Percentage of registration value charged as renewal fee."}
+      ],
+      "example": {
+        "request": "fbdctl getprotocolparams",
+        "response": {
+          "openPeriod": 30,
+          "biddingPeriod": 2160,
+          "revealPeriod": 720,
+          "registerDeadline": 2130,
+          "renewalWindow": 262800,
+          "renewalPeriod": 131040,
+          "renewalMaturity": 21600,
+          "transferLockup": 360,
+          "auctionMaturity": 5040,
+          "coinbaseMaturity": 100,
+          "blockTimeSeconds": 120,
+          "registrationBurnPercent": 50,
+          "renewalFeePercent": 1
+        }
+      }
+    }
+  ]
+}

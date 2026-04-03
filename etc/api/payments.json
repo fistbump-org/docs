@@ -1,0 +1,47 @@
+{
+  "id": "payments",
+  "label": "Payments",
+  "description": "Send FBC payments.",
+  "methods": [
+    {
+      "name": "sendnone",
+      "description": "Send a plain FBC payment (NONE covenant) to an address.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": true,
+          "description": "Destination Bech32 address."
+        },
+        {
+          "name": "amount",
+          "type": "number",
+          "required": true,
+          "description": "Amount to send in FBC (e.g. 1.5)."
+        },
+        {
+          "name": "subfee",
+          "type": "bool",
+          "required": false,
+          "description": "Subtract the fee from the send amount.",
+          "default": "false"
+        }
+      ],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash of the broadcast transaction."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main sendnone fb1q... 10.0",
+        "response": {
+          "txid": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"
+        }
+      },
+      "notes": "Use createtx for unsigned transactions."
+    }
+  ]
+}

@@ -1,0 +1,362 @@
+{
+  "id": "blockchain",
+  "label": "Blockchain",
+  "description": "Query blockchain state, blocks, and headers.",
+  "methods": [
+    {
+      "name": "getblockchaininfo",
+      "description": "Returns blockchain state info.",
+      "wallet": "no",
+      "params": [],
+      "response": [
+        {
+          "name": "chain",
+          "type": "string",
+          "description": "Network name (main, testnet, regtest, simnet)."
+        },
+        {
+          "name": "blocks",
+          "type": "int",
+          "description": "Height of the most recent validated block."
+        },
+        {
+          "name": "headers",
+          "type": "int",
+          "description": "Height of the highest known header."
+        },
+        {
+          "name": "bestblockhash",
+          "type": "string",
+          "description": "Hex hash of the chain tip block."
+        },
+        {
+          "name": "treeroot",
+          "type": "string",
+          "description": "Hex Urkel tree root of the chain tip."
+        },
+        {
+          "name": "difficulty",
+          "type": "number",
+          "description": "Current difficulty."
+        },
+        {
+          "name": "mediantime",
+          "type": "int",
+          "description": "Median time past of the chain tip (unix seconds)."
+        },
+        {
+          "name": "chainwork",
+          "type": "string",
+          "description": "Total cumulative chain work (hex-encoded 256-bit)."
+        },
+        {
+          "name": "verificationprogress",
+          "type": "number",
+          "description": "Ratio of validated blocks to known headers (0.0–1.0)."
+        },
+        {
+          "name": "pruned",
+          "type": "bool",
+          "description": "Whether the node is pruned (always false)."
+        },
+        {
+          "name": "softforks",
+          "type": "object",
+          "description": "BIP9 deployment states (empty object if no active deployments)."
+        },
+        {
+          "name": "version",
+          "type": "string",
+          "description": "Node version string."
+        }
+      ],
+      "example": {
+        "request": "fbdctl getblockchaininfo",
+        "response": {
+          "chain": "main",
+          "blocks": 318614,
+          "headers": 318614,
+          "bestblockhash": "3a8c1f5e9b2d4a7c6e0f8b3d5a7c9e1f2b4d6a8c0e2f4a6b8d0c2e4f6a8b0d",
+          "treeroot": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+          "difficulty": 1048576.0,
+          "mediantime": 1740614400,
+          "chainwork": "000000000000000000000000000000000000000000000003a8f9c1d2e4b5a6f7",
+          "pruned": false,
+          "softforks": {},
+          "verificationprogress": 1.0,
+          "version": "0.1.0"
+        }
+      }
+    },
+    {
+      "name": "getblockcount",
+      "description": "Returns the current chain height.",
+      "wallet": "no",
+      "params": [],
+      "response": [
+        {
+          "name": "(int)",
+          "type": "int",
+          "description": "Current chain height."
+        }
+      ],
+      "example": {
+        "request": "fbdctl getblockcount",
+        "response": 318614
+      }
+    },
+    {
+      "name": "getbestblockhash",
+      "description": "Returns the hash of the chain tip block.",
+      "wallet": "no",
+      "params": [],
+      "response": [
+        {
+          "name": "(string)",
+          "type": "string",
+          "description": "Hex-encoded block hash."
+        }
+      ],
+      "example": {
+        "request": "fbdctl getbestblockhash",
+        "response": "3a8c1f5e9b2d4a7c6e0f8b3d5a7c9e1f2b4d6a8c0e2f4a6b8d0c2e4f6a8b0d"
+      }
+    },
+    {
+      "name": "getblockhash",
+      "description": "Returns the block hash at a given height.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "height",
+          "type": "int",
+          "required": true,
+          "description": "Block height."
+        }
+      ],
+      "response": [
+        {
+          "name": "(string)",
+          "type": "string",
+          "description": "Hex-encoded block hash."
+        }
+      ],
+      "example": {
+        "request": "fbdctl getblockhash 743",
+        "response": "0000000000001d88555bd4016949dfcf46ff9a03c2257ef00975053e0885f3ed"
+      }
+    },
+    {
+      "name": "getblockheader",
+      "description": "Returns a block header.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "height_or_hash",
+          "type": "int | string",
+          "required": true,
+          "description": "Block height (int) or hex block hash (string)."
+        }
+      ],
+      "response": [
+        {
+          "name": "hash",
+          "type": "string",
+          "description": "Block hash."
+        },
+        {
+          "name": "version",
+          "type": "int",
+          "description": "Block version."
+        },
+        {
+          "name": "previousblockhash",
+          "type": "string",
+          "description": "Previous block hash."
+        },
+        {
+          "name": "merkleroot",
+          "type": "string",
+          "description": "Transaction merkle root."
+        },
+        {
+          "name": "witnessroot",
+          "type": "string",
+          "description": "Witness merkle root."
+        },
+        {
+          "name": "treeroot",
+          "type": "string",
+          "description": "Urkel tree root."
+        },
+        {
+          "name": "reservedroot",
+          "type": "string",
+          "description": "Reserved root."
+        },
+        {
+          "name": "time",
+          "type": "int",
+          "description": "Block timestamp (unix seconds)."
+        },
+        {
+          "name": "bits",
+          "type": "int",
+          "description": "Compact difficulty target."
+        },
+        {
+          "name": "nonce",
+          "type": "int",
+          "description": "Block nonce."
+        },
+        {
+          "name": "difficulty",
+          "type": "number",
+          "description": "Current difficulty."
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "description": "Block height."
+        }
+      ],
+      "example": {
+        "request": "fbdctl getblockheader 743",
+        "response": {
+          "hash": "0000000000001d88555bd4016949dfcf46ff9a03c2257ef00975053e0885f3ed",
+          "height": 743,
+          "version": 0,
+          "previousblockhash": "00000000000001174fcc02270cd52a4d5d4793282bcb4e86e16f8e8f8cd1fc28",
+          "merkleroot": "782b662e53007c3e6d52e6f693db4b9a33bcf8d80e223e58c33498115dbbd029",
+          "witnessroot": "ac4b4c1a94240910cd144d33bdfb4cc19634965e3150d8db7d949533f752a9fb",
+          "treeroot": "0000000000000000000000000000000000000000000000000000000000000000",
+          "reservedroot": "0000000000000000000000000000000000000000000000000000000000000000",
+          "time": 1580967687,
+          "bits": 440122957,
+          "nonce": 38862683,
+          "difficulty": 280817.137143355
+        }
+      },
+      "notes": "Does not include the BalloonProof. Use getblock for proof data."
+    },
+    {
+      "name": "getblock",
+      "description": "Returns a block with transactions.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "height_or_hash",
+          "type": "int | string",
+          "required": true,
+          "description": "Block height (int) or hex block hash (string)."
+        },
+        {
+          "name": "verbose",
+          "type": "bool",
+          "required": false,
+          "description": "Include full transaction data.",
+          "default": "true"
+        }
+      ],
+      "response": [
+        {
+          "name": "hash",
+          "type": "string",
+          "description": "Block hash."
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "description": "Block height."
+        },
+        {
+          "name": "version",
+          "type": "int",
+          "description": "Block version."
+        },
+        {
+          "name": "previousblockhash",
+          "type": "string",
+          "description": "Previous block hash."
+        },
+        {
+          "name": "merkleroot",
+          "type": "string",
+          "description": "Transaction merkle root."
+        },
+        {
+          "name": "witnessroot",
+          "type": "string",
+          "description": "Witness merkle root."
+        },
+        {
+          "name": "treeroot",
+          "type": "string",
+          "description": "Urkel tree root."
+        },
+        {
+          "name": "reservedroot",
+          "type": "string",
+          "description": "Reserved root."
+        },
+        {
+          "name": "time",
+          "type": "int",
+          "description": "Block timestamp."
+        },
+        {
+          "name": "bits",
+          "type": "int",
+          "description": "Compact difficulty target."
+        },
+        {
+          "name": "nonce",
+          "type": "int",
+          "description": "Block nonce."
+        },
+        {
+          "name": "difficulty",
+          "type": "number",
+          "description": "Current difficulty."
+        },
+        {
+          "name": "confirmations",
+          "type": "int",
+          "description": "Number of confirmations."
+        },
+        {
+          "name": "proof",
+          "type": "string",
+          "description": "Hex-encoded BalloonProof (5376 bytes, 32 challenge samples). Only in verbose mode."
+        },
+        {
+          "name": "tx",
+          "type": "array",
+          "description": "Array of transaction objects (verbose) or just the header (non-verbose)."
+        }
+      ],
+      "example": {
+        "request": "fbdctl getblock 743",
+        "response": {
+          "hash": "0000000000001d88555bd4016949dfcf46ff9a03c2257ef00975053e0885f3ed",
+          "height": 743,
+          "version": 0,
+          "previousblockhash": "00000000000001174fcc02270cd52a4d5d4793282bcb4e86e16f8e8f8cd1fc28",
+          "merkleroot": "782b662e53007c3e6d52e6f693db4b9a33bcf8d80e223e58c33498115dbbd029",
+          "witnessroot": "ac4b4c1a94240910cd144d33bdfb4cc19634965e3150d8db7d949533f752a9fb",
+          "treeroot": "0000000000000000000000000000000000000000000000000000000000000000",
+          "reservedroot": "0000000000000000000000000000000000000000000000000000000000000000",
+          "time": 1580967687,
+          "bits": 440122957,
+          "nonce": 38862683,
+          "difficulty": 280817.137143355,
+          "confirmations": 317872,
+          "proof": "a1b2c3d4...",
+          "tx": [
+            "..."
+          ]
+        }
+      }
+    }
+  ]
+}

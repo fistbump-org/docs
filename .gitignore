@@ -1,0 +1,5 @@
+.DS_Store
+._*
+download/*\-latest\-*.zip
+download/*.zip
+index.html

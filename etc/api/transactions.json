@@ -1,0 +1,247 @@
+{
+  "id": "transactions",
+  "label": "Transactions",
+  "description": "Look up and decode transactions.",
+  "methods": [
+    {
+      "name": "gettransaction",
+      "description": "Returns a decoded transaction by txid.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "txid",
+          "type": "string",
+          "required": true,
+          "description": "Hex-encoded transaction hash."
+        }
+      ],
+      "response": [
+        {
+          "name": "hash",
+          "type": "string",
+          "description": "Transaction hash."
+        },
+        {
+          "name": "witnessHash",
+          "type": "string",
+          "description": "Witness transaction hash."
+        },
+        {
+          "name": "size",
+          "type": "int",
+          "description": "Serialized size in bytes."
+        },
+        {
+          "name": "vsize",
+          "type": "int",
+          "description": "Virtual size in bytes."
+        },
+        {
+          "name": "version",
+          "type": "int",
+          "description": "Transaction version."
+        },
+        {
+          "name": "locktime",
+          "type": "int",
+          "description": "Lock time."
+        },
+        {
+          "name": "inputs",
+          "type": "array",
+          "description": "Array of input objects with prevout {hash, index}, witness (hex array), and sequence."
+        },
+        {
+          "name": "outputs",
+          "type": "array",
+          "description": "Array of output objects with value, n, address {version, hash, string}, covenant {type, action, items}."
+        },
+        {
+          "name": "confirmations",
+          "type": "int",
+          "description": "Number of confirmations (0 if mempool)."
+        },
+        {
+          "name": "time",
+          "type": "int",
+          "description": "Mempool entry time (unix seconds). Only present for unconfirmed transactions."
+        },
+        {
+          "name": "blockhash",
+          "type": "string",
+          "description": "Block hash. Only present for confirmed transactions (requires --index-tx)."
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "description": "Block height. Only present for confirmed transactions."
+        }
+      ],
+      "example": {
+        "request": "fbdctl gettransaction a1b2c3d4...",
+        "response": {
+          "hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+          "witnessHash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+          "size": 215,
+          "vsize": 140,
+          "version": 0,
+          "locktime": 0,
+          "inputs": [
+            {
+              "prevout": {
+                "hash": "...",
+                "index": 0
+              },
+              "sequence": 4294967295,
+              "witness": []
+            }
+          ],
+          "outputs": [
+            {
+              "value": 1000000,
+              "n": 0,
+              "address": {
+                "version": 0,
+                "hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
+                "string": "fb1q..."
+              },
+              "covenant": {
+                "type": 0,
+                "action": "NONE",
+                "items": []
+              }
+            }
+          ],
+          "blockhash": "5d2a9c8f...",
+          "height": 250000,
+          "confirmations": 419
+        }
+      },
+      "notes": "Requires --index-tx for confirmed transactions.",
+      "requires": "index-tx?"
+    },
+    {
+      "name": "getrawtransaction",
+      "description": "Returns raw transaction hex by txid.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "txid",
+          "type": "string",
+          "required": true,
+          "description": "Hex-encoded transaction hash."
+        }
+      ],
+      "response": [
+        {
+          "name": "(string)",
+          "type": "string",
+          "description": "Raw transaction hex."
+        }
+      ],
+      "example": {
+        "request": "fbdctl getrawtransaction a1b2c3d4...",
+        "response": "00000001a1b2c3d4..."
+      },
+      "notes": "Requires --index-tx for confirmed transactions.",
+      "requires": "index-tx?"
+    },
+    {
+      "name": "decoderawtransaction",
+      "description": "Decode a raw transaction or PSTX hex without broadcasting.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "hex",
+          "type": "string",
+          "required": true,
+          "description": "Raw transaction hex or PSTX hex."
+        }
+      ],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash."
+        },
+        {
+          "name": "version",
+          "type": "int",
+          "description": "Transaction version."
+        },
+        {
+          "name": "locktime",
+          "type": "int",
+          "description": "Lock time."
+        },
+        {
+          "name": "inputs",
+          "type": "array",
+          "description": "Input objects with prevout, sequence. May include witness (hex array), and for PSTX: coinValue, coinAddress, signatures (e.g. \"1/2\"), multisig (e.g. \"2-of-3\")."
+        },
+        {
+          "name": "outputs",
+          "type": "array",
+          "description": "Output objects with value, index, address (string), covenant {type, action, items?}."
+        },
+        {
+          "name": "format",
+          "type": "string",
+          "description": "\"pstx\" if PSTX format detected (omitted for raw tx)."
+        },
+        {
+          "name": "fee",
+          "type": "int",
+          "description": "Transaction fee in dollarydoos (PSTX only)."
+        },
+        {
+          "name": "weight",
+          "type": "int",
+          "description": "Transaction weight."
+        },
+        {
+          "name": "vsize",
+          "type": "int",
+          "description": "Virtual size in bytes."
+        }
+      ],
+      "example": {
+        "request": "fbdctl decoderawtransaction 01c4000000...",
+        "response": {
+          "format": "pstx",
+          "txid": "a1b2c3d4...",
+          "version": 0,
+          "locktime": 250000,
+          "inputs": [
+            {
+              "prevout": {
+                "hash": "...",
+                "index": 0
+              },
+              "sequence": 4294967295,
+              "coinValue": 5000000,
+              "coinAddress": "fb1q...",
+              "signatures": "0/1"
+            }
+          ],
+          "outputs": [
+            {
+              "value": 4999000,
+              "index": 0,
+              "address": "fb1q...",
+              "covenant": {
+                "type": 0,
+                "action": "NONE",
+                "items": []
+              }
+            }
+          ],
+          "fee": 1000,
+          "weight": 580,
+          "vsize": 145
+        }
+      },
+      "notes": "Auto-detects PSTX vs raw transaction format."
+    }
+  ]
+}

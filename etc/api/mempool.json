@@ -1,0 +1,114 @@
+{
+  "id": "mempool",
+  "label": "Mempool",
+  "description": "Transaction mempool.",
+  "methods": [
+    {
+      "name": "getmempoolinfo",
+      "description": "Returns mempool info.",
+      "wallet": "no",
+      "params": [],
+      "response": [
+        {
+          "name": "size",
+          "type": "int",
+          "description": "Number of transactions in the mempool."
+        },
+        {
+          "name": "bytes",
+          "type": "int",
+          "description": "Total byte size of all mempool transactions."
+        },
+        {
+          "name": "orphans",
+          "type": "int",
+          "description": "Number of orphan transactions."
+        },
+        {
+          "name": "usage",
+          "type": "int",
+          "description": "Memory usage in bytes (same as bytes)."
+        }
+      ],
+      "example": {
+        "request": "fbdctl getmempoolinfo",
+        "response": {
+          "size": 3,
+          "bytes": 1248,
+          "orphans": 0,
+          "usage": 1248
+        }
+      }
+    },
+    {
+      "name": "getrawmempool",
+      "description": "Returns all mempool transaction hashes.",
+      "wallet": "no",
+      "params": [],
+      "response": [
+        {
+          "name": "(array)",
+          "type": "string[]",
+          "description": "Array of hex-encoded transaction hashes."
+        }
+      ],
+      "example": {
+        "request": "fbdctl getrawmempool",
+        "response": [
+          "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+          "f0e1d2c3b4a5f6e7d8c9b0a1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e1"
+        ]
+      }
+    },
+    {
+      "name": "removetx",
+      "description": "Remove a transaction from the mempool by its hash.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "txid",
+          "type": "string",
+          "required": true,
+          "description": "Transaction hash (hex)."
+        }
+      ],
+      "response": [
+        {
+          "name": "removed",
+          "type": "int",
+          "description": "Number of transactions removed (including descendants)."
+        }
+      ],
+      "example": {
+        "request": "fbdctl removetx a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+        "response": {
+          "removed": 1
+        }
+      }
+    },
+    {
+      "name": "sendrawtransaction",
+      "description": "Submit a raw transaction to the mempool.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "hex",
+          "type": "string",
+          "required": true,
+          "description": "Raw transaction hex."
+        }
+      ],
+      "response": [
+        {
+          "name": "(string)",
+          "type": "string",
+          "description": "Transaction hash of the accepted transaction."
+        }
+      ],
+      "example": {
+        "request": "fbdctl sendrawtransaction 00000001...",
+        "response": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"
+      }
+    }
+  ]
+}

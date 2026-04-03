@@ -1,0 +1,241 @@
+{
+  "id": "mining",
+  "label": "Mining",
+  "description": "Mining and block submission.",
+  "methods": [
+    {
+      "name": "getmininginfo",
+      "description": "Returns mining info.",
+      "wallet": "no",
+      "params": [],
+      "response": [
+        {
+          "name": "blocks",
+          "type": "int",
+          "description": "Current chain height."
+        },
+        {
+          "name": "difficulty",
+          "type": "number",
+          "description": "Current difficulty."
+        },
+        {
+          "name": "pooledtx",
+          "type": "int",
+          "description": "Number of transactions in the mempool."
+        },
+        {
+          "name": "cpus",
+          "type": "int",
+          "description": "Number of CPU threads detected at startup."
+        },
+        {
+          "name": "minerThreads",
+          "type": "int",
+          "description": "Configured miner thread count (0 = auto)."
+        }
+      ],
+      "example": {
+        "request": "fbdctl getmininginfo",
+        "response": {
+          "blocks": 318614,
+          "difficulty": 1048576.0,
+          "pooledtx": 3,
+          "cpus": 8,
+          "minerThreads": 0
+        }
+      }
+    },
+    {
+      "name": "estimatefee",
+      "description": "Returns the minimum fee rate.",
+      "wallet": "no",
+      "params": [],
+      "response": [
+        {
+          "name": "(int)",
+          "type": "int",
+          "description": "Minimum relay fee rate in dollarydoos per kvB."
+        }
+      ],
+      "example": {
+        "request": "fbdctl estimatefee",
+        "response": 10000
+      }
+    },
+    {
+      "name": "getblocktemplate",
+      "description": "Returns a block template for mining.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": false,
+          "description": "Coinbase payout address. Falls back to --miner-address config."
+        }
+      ],
+      "response": [
+        {
+          "name": "height",
+          "type": "int",
+          "description": "Block height for the template."
+        },
+        {
+          "name": "bits",
+          "type": "int",
+          "description": "Compact difficulty target."
+        },
+        {
+          "name": "prevblockhash",
+          "type": "string",
+          "description": "Previous block hash."
+        },
+        {
+          "name": "curtime",
+          "type": "int",
+          "description": "Current timestamp (unix seconds)."
+        },
+        {
+          "name": "coinbase",
+          "type": "string",
+          "description": "Hex-encoded coinbase transaction."
+        },
+        {
+          "name": "transactions",
+          "type": "array",
+          "description": "Array of {data, txid, fee} for mempool transactions."
+        },
+        {
+          "name": "merkleroot",
+          "type": "string",
+          "description": "Transaction merkle root."
+        },
+        {
+          "name": "witnessroot",
+          "type": "string",
+          "description": "Witness merkle root."
+        },
+        {
+          "name": "treeroot",
+          "type": "string",
+          "description": "Urkel tree root."
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "description": "256-bit target (hex)."
+        },
+        {
+          "name": "fees",
+          "type": "int",
+          "description": "Total fees from included transactions."
+        },
+        {
+          "name": "pow",
+          "type": "object",
+          "description": "Proof-of-work parameters: algorithm, hash, slots, rounds, delta, proofsamples, proofsize."
+        }
+      ],
+      "example": {
+        "request": "fbdctl getblocktemplate fb1q...",
+        "response": {
+          "height": 318615,
+          "bits": 436364076,
+          "prevblockhash": "0000000000001d88...",
+          "curtime": 1740615000,
+          "coinbase": "00000001...",
+          "transactions": [
+            {
+              "data": "...",
+              "txid": "a1b2c3d4...",
+              "fee": 1000
+            }
+          ],
+          "merkleroot": "...",
+          "witnessroot": "...",
+          "treeroot": "...",
+          "target": "00000000000000...",
+          "fees": 1000,
+          "pow": {
+            "algorithm": "balloon",
+            "hash": "blake2b-256",
+            "slots": 16777216,
+            "rounds": 1,
+            "delta": 1,
+            "proofsamples": 32,
+            "proofsize": 5376
+          }
+        }
+      },
+      "notes": "The pow object describes BalloonHash parameters. Miners must compute a BalloonHash proof and include it in the submitted block."
+    },
+    {
+      "name": "generate",
+      "description": "Mine blocks instantly (regtest/simnet only).",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "count",
+          "type": "int",
+          "required": false,
+          "description": "Number of blocks to generate (1-1000).",
+          "default": "1"
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "required": false,
+          "description": "Coinbase payout address. Falls back to --miner-address config."
+        }
+      ],
+      "response": [
+        {
+          "name": "(array)",
+          "type": "string[]",
+          "description": "Array of generated block hashes."
+        }
+      ],
+      "example": {
+        "request": "fbdctl generate 10",
+        "response": [
+          "0000000000001d88...",
+          "0000000000002a44..."
+        ]
+      },
+      "notes": "Only available on regtest and simnet networks."
+    },
+    {
+      "name": "submitblock",
+      "description": "Submit a mined block to the network.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "hex",
+          "type": "string",
+          "required": true,
+          "description": "Raw block hex (header + BalloonProof + transactions)."
+        }
+      ],
+      "response": [
+        {
+          "name": "hash",
+          "type": "string",
+          "description": "Block hash."
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "description": "Block height."
+        }
+      ],
+      "example": {
+        "request": "fbdctl submitblock 00000000...",
+        "response": {
+          "hash": "3a8c1f5e...",
+          "height": 318615
+        }
+      }
+    }
+  ]
+}

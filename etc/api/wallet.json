@@ -1,0 +1,809 @@
+{
+  "id": "wallet",
+  "label": "Wallet",
+  "description": "Wallets, addresses, balances, and coins.",
+  "methods": [
+    {
+      "name": "listwallets",
+      "description": "List all wallet names on this node.",
+      "wallet": "no",
+      "params": [],
+      "response": [
+        {
+          "name": "(array)",
+          "type": "string[]",
+          "description": "Sorted array of wallet names."
+        }
+      ],
+      "example": {
+        "request": "fbdctl listwallets",
+        "response": [
+          "main",
+          "savings",
+          "vault"
+        ]
+      }
+    },
+    {
+      "name": "createwallet",
+      "description": "Create a new HD wallet.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Wallet name."
+        },
+        {
+          "name": "mnemonic_or_xpriv",
+          "type": "string",
+          "required": false,
+          "description": "BIP39 mnemonic phrase or xpriv key to import. If omitted, a new mnemonic is generated."
+        }
+      ],
+      "response": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Wallet name."
+        },
+        {
+          "name": "mnemonic",
+          "type": "string",
+          "description": "The 24-word mnemonic (only if newly generated)."
+        },
+        {
+          "name": "imported",
+          "type": "string",
+          "description": "\"mnemonic\" or \"xpriv\" (only if importing)."
+        },
+        {
+          "name": "addresses",
+          "type": "int",
+          "description": "Number of pre-derived addresses."
+        }
+      ],
+      "example": {
+        "request": "fbdctl createwallet main",
+        "response": {
+          "name": "main",
+          "mnemonic": "abandon ability able about above absent absorb abstract absurd abuse access accident account accuse achieve acid acoustic acquire across act action actor actress actual adapt",
+          "addresses": 40
+        }
+      },
+      "notes": "Accepts mnemonic or xpriv. Generates a new mnemonic if omitted."
+    },
+    {
+      "name": "createmultisigwallet",
+      "description": "Create a multisig (P2WSH) wallet.",
+      "wallet": "optional",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Wallet name."
+        },
+        {
+          "name": "m",
+          "type": "int",
+          "required": true,
+          "description": "Required signatures (m-of-n)."
+        },
+        {
+          "name": "mnemonic_or_xpriv",
+          "type": "string",
+          "required": false,
+          "description": "Optional mnemonic or xpriv for the local key."
+        },
+        {
+          "name": "xpubs",
+          "type": "string",
+          "required": true,
+          "description": "Comma-separated cosigner xpub keys."
+        }
+      ],
+      "response": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Wallet name."
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "description": "Always \"multisig\"."
+        },
+        {
+          "name": "m",
+          "type": "int",
+          "description": "Required signatures."
+        },
+        {
+          "name": "n",
+          "type": "int",
+          "description": "Total signers (cosigners + 1)."
+        },
+        {
+          "name": "mnemonic",
+          "type": "string",
+          "description": "Generated mnemonic (if auto-generated)."
+        },
+        {
+          "name": "xpub",
+          "type": "string",
+          "description": "This wallet's xpub (share with cosigners)."
+        }
+      ],
+      "example": {
+        "request": "fbdctl createmultisigwallet vault 2 xpub661MyMwAq...,xpub661MyMwAq...",
+        "response": {
+          "name": "vault",
+          "type": "multisig",
+          "m": 2,
+          "n": 3,
+          "mnemonic": "abandon ability able ...",
+          "xpub": "xpub661MyMwAqRbcF..."
+        }
+      },
+      "notes": "Your local key is auto-included as a signer. n = cosigners + 1."
+    },
+    {
+      "name": "deletewallet",
+      "description": "Permanently delete a wallet and all its data.",
+      "wallet": "yes",
+      "params": [],
+      "response": [
+        {
+          "name": "(bool)",
+          "type": "bool",
+          "description": "true on success."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet old deletewallet",
+        "response": true
+      }
+    },
+    {
+      "name": "getwalletinfo",
+      "description": "Returns wallet information including keys and balance.",
+      "wallet": "yes",
+      "params": [],
+      "response": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Wallet name."
+        },
+        {
+          "name": "initialized",
+          "type": "bool",
+          "description": "Whether the wallet is initialized."
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "description": "\"regular\" or \"multisig\"."
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "description": "Primary receive address (index 0)."
+        },
+        {
+          "name": "xpub",
+          "type": "string | null",
+          "description": "Account-level extended public key."
+        },
+        {
+          "name": "addresses",
+          "type": "int",
+          "description": "Total derived addresses."
+        },
+        {
+          "name": "scanHeight",
+          "type": "int",
+          "description": "Last scanned block height."
+        },
+        {
+          "name": "balance",
+          "type": "int",
+          "description": "Total balance in dollarydoos (includes unconfirmed)."
+        },
+        {
+          "name": "spendable",
+          "type": "int",
+          "description": "Spendable balance (total minus locked minus immature coinbase) in dollarydoos."
+        },
+        {
+          "name": "m",
+          "type": "int",
+          "description": "Required signatures (multisig only)."
+        },
+        {
+          "name": "n",
+          "type": "int",
+          "description": "Total signers (multisig only)."
+        },
+        {
+          "name": "cosignerXpubs",
+          "type": "string[]",
+          "description": "Cosigner xpub keys (multisig only)."
+        },
+        {
+          "name": "encrypted",
+          "type": "bool",
+          "description": "Whether the wallet is encrypted with a passphrase."
+        },
+        {
+          "name": "unlocked",
+          "type": "bool",
+          "description": "Whether an encrypted wallet is currently unlocked."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main getwalletinfo",
+        "response": {
+          "name": "main",
+          "initialized": true,
+          "type": "regular",
+          "address": "fb1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq7xtk52",
+          "xpub": "xpub661MyMwAqRbcF...",
+          "addresses": 42,
+          "scanHeight": 250419,
+          "balance": 150000000,
+          "spendable": 140000000,
+          "encrypted": false,
+          "unlocked": true
+        }
+      }
+    },
+    {
+      "name": "getwalletsecret",
+      "description": "Returns the wallet's mnemonic and/or xpriv. Wallet must be unlocked.",
+      "wallet": "yes",
+      "params": [],
+      "response": [
+        {
+          "name": "mnemonic",
+          "type": "string",
+          "description": "BIP39 mnemonic phrase (if wallet was created with one)."
+        },
+        {
+          "name": "xpriv",
+          "type": "string",
+          "description": "Account-level extended private key (if available)."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main getwalletsecret",
+        "response": {
+          "mnemonic": "abandon ability able about above absent absorb abstract absurd abuse access accident account accuse achieve acid acoustic acquire across act action actor actress actual adapt",
+          "xpriv": "xprv9s21ZrQH143K..."
+        }
+      },
+      "notes": "Wallet must be unlocked with walletpassphrase first if encrypted."
+    },
+    {
+      "name": "encryptwallet",
+      "description": "Encrypts the wallet with a passphrase. One-way migration — cannot be undone. After encryption, signing operations require the wallet to be unlocked with walletpassphrase.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "passphrase",
+          "type": "string",
+          "description": "The passphrase to encrypt with."
+        }
+      ],
+      "response": [
+        {
+          "name": "(string)",
+          "type": "string",
+          "description": "Success message."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main encryptwallet \"my secret passphrase\"",
+        "response": "wallet encrypted successfully"
+      }
+    },
+    {
+      "name": "walletpassphrase",
+      "description": "Unlocks an encrypted wallet for signing operations. Keys are held in memory until the timeout expires or walletlock is called.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "passphrase",
+          "type": "string",
+          "description": "The wallet passphrase."
+        },
+        {
+          "name": "timeout",
+          "type": "int",
+          "description": "Seconds to keep the wallet unlocked. Default 300."
+        }
+      ],
+      "response": [
+        {
+          "name": "(string)",
+          "type": "string",
+          "description": "Success message."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main walletpassphrase \"my secret passphrase\" 600",
+        "response": "wallet unlocked for 600 seconds"
+      }
+    },
+    {
+      "name": "walletlock",
+      "description": "Locks an encrypted wallet, wiping decrypted keys from memory. Signing operations will fail until walletpassphrase is called again.",
+      "wallet": "yes",
+      "params": [],
+      "response": [
+        {
+          "name": "(string)",
+          "type": "string",
+          "description": "Success message."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main walletlock",
+        "response": "wallet locked"
+      }
+    },
+    {
+      "name": "getbalance",
+      "description": "Returns wallet balance breakdown.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": false,
+          "description": "Bech32 address to query balance for."
+        }
+      ],
+      "response": [
+        {
+          "name": "spendable",
+          "type": "int",
+          "description": "Available to spend (total minus locked minus immature coinbase) in dollarydoos."
+        },
+        {
+          "name": "confirmed",
+          "type": "int",
+          "description": "Confirmed balance in dollarydoos."
+        },
+        {
+          "name": "pending",
+          "type": "int",
+          "description": "Pending change (unconfirmed minus confirmed). Only present when non-zero."
+        },
+        {
+          "name": "locked",
+          "type": "int",
+          "description": "Locked balance (covenant outputs). Only present when > 0."
+        },
+        {
+          "name": "immature",
+          "type": "int",
+          "description": "Immature coinbase balance (requires 100 confirmations). Only present when > 0."
+        },
+        {
+          "name": "forfeited",
+          "type": "int",
+          "description": "Value locked in unrevealed bids or expired auctions. Only present when > 0."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main getbalance",
+        "response": {
+          "spendable": 140000000,
+          "confirmed": 150000000
+        }
+      },
+      "notes": "With an address param, returns a plain integer balance instead of the detailed object. Conditional fields (pending, locked, immature, forfeited) are omitted when zero."
+    },
+    {
+      "name": "getnewaddress",
+      "description": "Get the next unused receive address.",
+      "wallet": "yes",
+      "params": [],
+      "response": [
+        {
+          "name": "(string)",
+          "type": "string",
+          "description": "Bech32-encoded receive address."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main getnewaddress",
+        "response": "fb1q..."
+      }
+    },
+    {
+      "name": "getchangeaddress",
+      "description": "Get the next unused change address.",
+      "wallet": "yes",
+      "params": [],
+      "response": [
+        {
+          "name": "(string)",
+          "type": "string",
+          "description": "Bech32-encoded change address."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main getchangeaddress",
+        "response": "fb1q..."
+      }
+    },
+    {
+      "name": "listunspent",
+      "description": "List all unspent coins.",
+      "wallet": "yes",
+      "params": [],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash."
+        },
+        {
+          "name": "vout",
+          "type": "int",
+          "description": "Output index."
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "description": "Bech32 address."
+        },
+        {
+          "name": "value",
+          "type": "int",
+          "description": "Value in dollarydoos."
+        },
+        {
+          "name": "confirmations",
+          "type": "int",
+          "description": "Number of confirmations."
+        },
+        {
+          "name": "coinbase",
+          "type": "bool",
+          "description": "Whether this is a coinbase output."
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "description": "Block height where the coin was created."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main listunspent",
+        "response": [
+          {
+            "txid": "a1b2c3d4...",
+            "vout": 1,
+            "address": "fb1q...",
+            "value": 50000000,
+            "confirmations": 1200,
+            "coinbase": false,
+            "height": 249219
+          }
+        ]
+      }
+    },
+    {
+      "name": "listaddresses",
+      "description": "List all derived addresses with balances.",
+      "wallet": "yes",
+      "params": [],
+      "response": [
+        {
+          "name": "address",
+          "type": "string",
+          "description": "Bech32 address."
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "description": "BIP44 derivation path."
+        },
+        {
+          "name": "balance",
+          "type": "int",
+          "description": "Address balance in dollarydoos."
+        },
+        {
+          "name": "used",
+          "type": "bool",
+          "description": "Whether the address currently holds a balance."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main listaddresses",
+        "response": [
+          {
+            "address": "fb1q...",
+            "path": "m/44'/14159'/0'/0/0",
+            "balance": 50000000,
+            "used": true
+          },
+          {
+            "address": "fb1q...",
+            "path": "m/44'/14159'/0'/0/1",
+            "balance": 0,
+            "used": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "listtransactions",
+      "description": "List wallet transaction history.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "count",
+          "type": "int",
+          "required": false,
+          "description": "Number of transactions to return.",
+          "default": "10"
+        },
+        {
+          "name": "offset",
+          "type": "int",
+          "required": false,
+          "description": "Number of transactions to skip.",
+          "default": "0"
+        }
+      ],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash."
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "description": "\"send\", \"receive\", \"self\", or \"covenant\" (name operations)."
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "description": "Block height."
+        },
+        {
+          "name": "confirmations",
+          "type": "int",
+          "description": "Number of confirmations."
+        },
+        {
+          "name": "sent",
+          "type": "int",
+          "description": "Amount sent (dollarydoos)."
+        },
+        {
+          "name": "received",
+          "type": "int",
+          "description": "Amount received (dollarydoos)."
+        },
+        {
+          "name": "net",
+          "type": "int",
+          "description": "Net change (received - sent)."
+        },
+        {
+          "name": "fee",
+          "type": "int",
+          "description": "Fee paid (dollarydoos)."
+        },
+        {
+          "name": "timestamp",
+          "type": "int",
+          "description": "Block timestamp (unix seconds)."
+        },
+        {
+          "name": "covenants",
+          "type": "string[]",
+          "description": "Covenant types involved, optionally with name (e.g. \"OPEN example\", \"BID example\")."
+        },
+        {
+          "name": "coinbase",
+          "type": "bool",
+          "description": "Whether this transaction is a coinbase."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main listtransactions 5",
+        "response": [
+          {
+            "txid": "a1b2c3d4...",
+            "type": "send",
+            "height": 250400,
+            "confirmations": 19,
+            "sent": 5001000,
+            "received": 45000000,
+            "net": -5001000,
+            "fee": 1000,
+            "timestamp": 1740614400,
+            "covenants": [
+              "NONE"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "rescanwallet",
+      "description": "Rescan the blockchain for wallet transactions.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "fromHeight",
+          "type": "int",
+          "required": false,
+          "description": "Block height to start scanning from.",
+          "default": "0"
+        }
+      ],
+      "response": [
+        {
+          "name": "started",
+          "type": "bool",
+          "description": "Whether the rescan was started."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Wallet name."
+        },
+        {
+          "name": "from",
+          "type": "int",
+          "description": "Starting height."
+        },
+        {
+          "name": "to",
+          "type": "int",
+          "description": "Target height."
+        },
+        {
+          "name": "blocks",
+          "type": "int",
+          "description": "Total blocks to scan."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main rescanwallet",
+        "response": {
+          "started": true,
+          "name": "main",
+          "from": 0,
+          "to": 250419,
+          "blocks": 250420
+        }
+      },
+      "notes": "Async. Poll with getrescanprogress."
+    },
+    {
+      "name": "getrescanprogress",
+      "description": "Check the progress of a running wallet rescan.",
+      "wallet": "yes",
+      "params": [],
+      "response": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Wallet name."
+        },
+        {
+          "name": "current",
+          "type": "int",
+          "description": "Current scan height."
+        },
+        {
+          "name": "total",
+          "type": "int",
+          "description": "Target height."
+        },
+        {
+          "name": "percent",
+          "type": "number",
+          "description": "Completion percentage (3 decimal places)."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main getrescanprogress",
+        "response": {
+          "name": "main",
+          "current": 125000,
+          "total": 250419,
+          "percent": 49.917
+        }
+      },
+      "notes": "Returns null if no rescan is running."
+    },
+    {
+      "name": "validateaddress",
+      "description": "Validate a Bech32 address. If --wallet is specified, includes ismine field.",
+      "wallet": "optional",
+      "params": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": true,
+          "description": "Address string to validate."
+        }
+      ],
+      "response": [
+        {
+          "name": "isvalid",
+          "type": "bool",
+          "description": "Whether the address is valid."
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "description": "The normalized address."
+        },
+        {
+          "name": "version",
+          "type": "int",
+          "description": "Witness program version (if valid)."
+        },
+        {
+          "name": "hash",
+          "type": "string",
+          "description": "Address hash hex (if valid)."
+        },
+        {
+          "name": "ismine",
+          "type": "bool",
+          "description": "Whether the specified wallet owns this address. Only present when --wallet is used."
+        }
+      ],
+      "example": {
+        "request": "fbdctl validateaddress fb1q...",
+        "response": {
+          "isvalid": true,
+          "address": "fb1q...",
+          "version": 0,
+          "hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
+          "ismine": true
+        }
+      }
+    },
+    {
+      "name": "getwalletactions",
+      "description": "Returns all pending wallet actions grouped by type. A single call replaces the need to combine getbids, getnames, and getnameinfo to determine what the wallet needs to do.",
+      "wallet": "yes",
+      "params": [],
+      "response": [
+        {"name": "reveal", "type": "array", "description": "Names needing bid reveals. Each: {name, nameHash, deadline}."},
+        {"name": "register", "type": "array", "description": "Names ready to register. Each: {name, nameHash, deadline}."},
+        {"name": "redeem", "type": "array", "description": "Losing bids to redeem. Each: {name, nameHash, value}."},
+        {"name": "renew", "type": "array", "description": "Names approaching expiration. Each: {name, nameHash, expiresAt, blocksRemaining}."},
+        {"name": "finalize", "type": "array", "description": "Transfers ready to finalize. Each: {name, nameHash}."},
+        {"name": "repair", "type": "array", "description": "Bids with lost nonces needing repair. Each: {name, nameHash, lockup}."}
+      ],
+      "example": {
+        "request": "fbdctl --wallet main getwalletactions",
+        "response": {
+          "reveal": [],
+          "register": [{"name": "alice.k", "nameHash": "a1b2c3d4...", "deadline": 50000}],
+          "redeem": [],
+          "renew": [{"name": "bob.k", "nameHash": "c3d4e5f6...", "expiresAt": 300000, "blocksRemaining": 4000}],
+          "finalize": [],
+          "repair": []
+        }
+      }
+    }
+  ]
+}

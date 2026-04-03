@@ -1,0 +1,145 @@
+{
+  "id": "building",
+  "label": "Transaction Building",
+  "description": "Create, sign, combine, and broadcast transactions separately.",
+  "methods": [
+    {
+      "name": "createtx",
+      "description": "Create an unsigned transaction (PSTX).",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "action",
+          "type": "string",
+          "required": true,
+          "description": "Transaction type: none, open, bid, reveal, redeem, register, update, renew, transfer, finalize, revoke."
+        },
+        {
+          "name": "...",
+          "type": "varies",
+          "required": false,
+          "description": "Action-specific parameters (same as corresponding send* command)."
+        }
+      ],
+      "response": [
+        {
+          "name": "pstx",
+          "type": "string",
+          "description": "Hex-encoded Partially Signed Transaction."
+        },
+        {
+          "name": "inputs",
+          "type": "int",
+          "description": "Number of inputs."
+        },
+        {
+          "name": "outputs",
+          "type": "int",
+          "description": "Number of outputs."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main createtx none fb1q... 10.0",
+        "response": {
+          "pstx": "01c4000000...",
+          "inputs": 1,
+          "outputs": 2
+        }
+      },
+      "notes": "Bid nonces are saved at creation time."
+    },
+    {
+      "name": "signtx",
+      "description": "Sign a PSTX with the wallet's private key.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "hex",
+          "type": "string",
+          "required": true,
+          "description": "Hex-encoded PSTX from createtx or combinetx."
+        }
+      ],
+      "response": [
+        {
+          "name": "pstx",
+          "type": "string",
+          "description": "Updated PSTX hex with signatures added."
+        },
+        {
+          "name": "signatures",
+          "type": "int",
+          "description": "Number of signatures present after signing."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main signtx 01c4000000...",
+        "response": {
+          "pstx": "01c4000000...",
+          "signatures": 1
+        }
+      },
+      "notes": "For multisig, each cosigner calls signtx, then merges with combinetx."
+    },
+    {
+      "name": "combinetx",
+      "description": "Merge multiple partially-signed transactions into one.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "hexes",
+          "type": "string[]",
+          "required": true,
+          "description": "JSON array of PSTX hex strings (minimum 2)."
+        }
+      ],
+      "response": [
+        {
+          "name": "pstx",
+          "type": "string",
+          "description": "Combined PSTX hex with merged signatures."
+        },
+        {
+          "name": "signatures",
+          "type": "int",
+          "description": "Total unique signatures after combining."
+        }
+      ],
+      "example": {
+        "request": "fbdctl combinetx '[\"01c400...\",\"01c400...\"]'",
+        "response": {
+          "pstx": "01c4000000...",
+          "signatures": 2
+        }
+      },
+      "notes": "No --wallet required. All PSTXs must be for the same transaction."
+    },
+    {
+      "name": "broadcasttx",
+      "description": "Finalize a fully-signed PSTX and broadcast to the network.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "hex",
+          "type": "string",
+          "required": true,
+          "description": "Hex-encoded fully-signed PSTX."
+        }
+      ],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash of the broadcast transaction."
+        }
+      ],
+      "example": {
+        "request": "fbdctl broadcasttx 01c4000000...",
+        "response": {
+          "txid": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"
+        }
+      },
+      "notes": "No --wallet required."
+    }
+  ]
+}

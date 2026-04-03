@@ -1,0 +1,347 @@
+{
+  "id": "auctions",
+  "label": "Name Auctions",
+  "description": "Open, bid, reveal, register, and manage Fistbump names.",
+  "methods": [
+    {
+      "name": "sendopen",
+      "description": "Open an auction for a Fistbump name. Subdomain names (containing dots) are auto-detected.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "The name to open an auction for."
+        },
+        {
+          "name": "domain",
+          "type": "string",
+          "required": false,
+          "description": "ICANN domain for DNSSEC proof (required for premium names ≤6 bytes). Must have a _fbd TXT record containing fbd=<name>:<address>."
+        }
+      ],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main sendopen fbd fbd.dev",
+        "response": {
+          "txid": "a1b2c3d4..."
+        }
+      },
+      "notes": "Names ≤6 bytes are premium and require a DNSSEC proof. Set a TXT record at _fbd.<domain> with value fbd=<name>:<your-fbd-address>, then pass the domain. Non-premium names are released on a 60-day rollout schedule. Subdomain names (e.g., \"example.fistbump\") are auto-detected: the parent must exist on-chain and have allowSubdomains enabled."
+    },
+    {
+      "name": "sendbid",
+      "description": "Place a blind bid on a name auction.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "The name to bid on."
+        },
+        {
+          "name": "bid",
+          "type": "number",
+          "required": true,
+          "description": "Actual bid amount in FBC."
+        },
+        {
+          "name": "lockup",
+          "type": "number",
+          "required": true,
+          "description": "Total lockup amount in FBC (must be >= bid). The difference is the blind."
+        },
+        {
+          "name": "domain",
+          "type": "string",
+          "required": false,
+          "description": "ICANN domain for DNSSEC proof (required for premium names ≤6 bytes)."
+        }
+      ],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "The name."
+        },
+        {
+          "name": "bid",
+          "type": "int",
+          "description": "Bid amount in dollarydoos."
+        },
+        {
+          "name": "lockup",
+          "type": "int",
+          "description": "Lockup amount in dollarydoos."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main sendbid example 5.0 10.0",
+        "response": {
+          "txid": "a1b2c3d4...",
+          "name": "example",
+          "bid": 5000000,
+          "lockup": 10000000
+        }
+      },
+      "notes": "Lockup must be >= bid. The difference is the blind. Name must be in BIDDING state. Premium names (≤6 bytes) require a DNSSEC domain proof. Subdomain names are auto-detected and validated against the parent."
+    },
+    {
+      "name": "sendreveal",
+      "description": "Reveal a previously placed bid.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "The name to reveal bids for."
+        }
+      ],
+      "response": [
+        {
+          "name": "txids",
+          "type": "string[]",
+          "description": "Transaction hashes (one per revealed bid)."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main sendreveal example",
+        "response": {
+          "txids": [
+            "a1b2c3d4..."
+          ]
+        }
+      },
+      "notes": "Name must be in REVEAL state."
+    },
+    {
+      "name": "sendredeem",
+      "description": "Redeem a losing reveal to reclaim locked funds.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "The name to redeem losing bids for."
+        }
+      ],
+      "response": [
+        {
+          "name": "txids",
+          "type": "string[]",
+          "description": "Transaction hashes."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main sendredeem example",
+        "response": {
+          "txids": [
+            "a1b2c3d4..."
+          ]
+        }
+      },
+      "notes": "Name must be in CLOSED state."
+    },
+    {
+      "name": "sendregister",
+      "description": "Register a won name. Optionally set DNS records.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "The name to register."
+        },
+        {
+          "name": "resource",
+          "type": "object",
+          "required": false,
+          "description": "DNS resource data: {\"records\": [{\"type\": \"NS\", \"ns\": \"ns1.example.\"}, ...]}."
+        }
+      ],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main sendregister example '{\"records\":[{\"type\":\"NS\",\"ns\":\"ns1.example.\"}]}'",
+        "response": {
+          "txid": "a1b2c3d4..."
+        }
+      },
+      "notes": "Must own the winning reveal. For subdomain names, the registration fee is split: 50% burned, 25% to ancestor name owners, 25% to the development fund."
+    },
+    {
+      "name": "sendupdate",
+      "description": "Update DNS records and/or flags for an owned name.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "The name to update."
+        },
+        {
+          "name": "resource",
+          "type": "object",
+          "required": true,
+          "description": "New DNS resource data."
+        },
+        {
+          "name": "flags",
+          "type": "object",
+          "required": false,
+          "description": "Name flags: {\"auctionSubdomains\": true}. Once enabled, auctionSubdomains cannot be disabled."
+        }
+      ],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main sendupdate example '{\"records\":[{\"type\":\"A\",\"address\":\"1.2.3.4\"}]}'",
+        "response": {
+          "txid": "a1b2c3d4..."
+        }
+      },
+      "notes": "Name must be in CLOSED state. To enable subdomains, pass flags: {\"auctionSubdomains\": true}. This flag is permanent and cannot be unset. Names with auctionSubdomains cannot set delegation records (NS, DS, GLUE4, GLUE6, SYNTH4, SYNTH6). Existing delegation records must be removed before enabling subdomains."
+    },
+    {
+      "name": "sendrenew",
+      "description": "Renew an owned name.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "The name to renew."
+        }
+      ],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main sendrenew example",
+        "response": {
+          "txid": "a1b2c3d4..."
+        }
+      },
+      "notes": "Name must be in CLOSED state."
+    },
+    {
+      "name": "sendtransfer",
+      "description": "Start a name transfer to another address.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "The name to transfer."
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "required": true,
+          "description": "Destination Bech32 address."
+        }
+      ],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main sendtransfer example fb1q...",
+        "response": {
+          "txid": "a1b2c3d4..."
+        }
+      },
+      "notes": "Name must be in CLOSED state."
+    },
+    {
+      "name": "sendfinalize",
+      "description": "Finalize a pending name transfer.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "The name to finalize."
+        }
+      ],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main sendfinalize example",
+        "response": {
+          "txid": "a1b2c3d4..."
+        }
+      },
+      "notes": "Transfer lockup period must have elapsed."
+    },
+    {
+      "name": "sendrevoke",
+      "description": "Revoke a name, burning its value permanently.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "The name to revoke."
+        }
+      ],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main sendrevoke example",
+        "response": {
+          "txid": "a1b2c3d4..."
+        }
+      },
+      "notes": "Scorched earth measure. Permanently burns the name and its locked value. Use during the transfer lockup period to prevent a stolen name from being finalized. You lose the name and the coins, but the attacker gets nothing. After ~7 days the name reopens for auction."
+    }
+  ]
+}

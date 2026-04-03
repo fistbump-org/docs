@@ -1,0 +1,81 @@
+{
+  "id": "index",
+  "label": "Index",
+  "description": "Address-based lookups (requires --index-address).",
+  "methods": [
+    {
+      "name": "gettxbyaddress",
+      "description": "Returns transaction hashes for an address.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": true,
+          "description": "Bech32-encoded address."
+        }
+      ],
+      "response": [
+        {
+          "name": "(array)",
+          "type": "string[]",
+          "description": "Array of hex-encoded transaction hashes."
+        }
+      ],
+      "example": {
+        "request": "fbdctl gettxbyaddress fb1q...",
+        "response": [
+          "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"
+        ]
+      },
+      "requires": "index-address"
+    },
+    {
+      "name": "getcoinsbyaddress",
+      "description": "Returns unspent coins for an address.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": true,
+          "description": "Bech32-encoded address."
+        }
+      ],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash."
+        },
+        {
+          "name": "vout",
+          "type": "int",
+          "description": "Output index."
+        },
+        {
+          "name": "value",
+          "type": "int",
+          "description": "Value in dollarydoos."
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "description": "Bech32 address."
+        }
+      ],
+      "example": {
+        "request": "fbdctl getcoinsbyaddress fb1q...",
+        "response": [
+          {
+            "txid": "a1b2c3d4...",
+            "vout": 0,
+            "value": 5000000,
+            "address": "fb1q..."
+          }
+        ]
+      },
+      "requires": "index-address"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "id": "backup",
+  "label": "Backup & Restore",
+  "description": "Export and import wallet data.",
+  "methods": [
+    {
+      "name": "backupwallet",
+      "description": "Export wallet data to a JSON backup file.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "path",
+          "type": "string",
+          "required": true,
+          "description": "File path to write the backup to."
+        }
+      ],
+      "response": [
+        {
+          "name": "path",
+          "type": "string",
+          "description": "Expanded file path of the backup."
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "description": "Confirmation message."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main backupwallet ~/backup.json",
+        "response": {
+          "path": "/Users/eskimo/backup.json",
+          "message": "wallet backed up to /Users/eskimo/backup.json"
+        }
+      },
+      "notes": "File is written with 0600 permissions."
+    },
+    {
+      "name": "restorewallet",
+      "description": "Restore a wallet from a backup file.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Name for the restored wallet."
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "required": true,
+          "description": "Path to the backup JSON file."
+        }
+      ],
+      "response": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Restored wallet name."
+        },
+        {
+          "name": "birthHeight",
+          "type": "int",
+          "description": "Scan start height (backup birthHeight + 1, or 0)."
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "description": "Confirmation message."
+        }
+      ],
+      "example": {
+        "request": "fbdctl restorewallet recovered ~/backup.json",
+        "response": {
+          "name": "recovered",
+          "birthHeight": 200001,
+          "message": "wallet restored, rescan started from height 200001"
+        }
+      },
+      "notes": "Auto-rescans from birthHeight."
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "id": "signing",
+  "label": "Signing",
+  "description": "Sign and verify messages.",
+  "methods": [
+    {
+      "name": "signmessage",
+      "description": "Sign a message with a wallet address key.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": true,
+          "description": "Bech32 address to sign with."
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": true,
+          "description": "Message to sign."
+        }
+      ],
+      "response": [
+        {
+          "name": "(string)",
+          "type": "string",
+          "description": "Base64 recoverable ECDSA signature (65 bytes)."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main signmessage fb1q... \"Hello Fistbump\"",
+        "response": "H1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4=="
+      }
+    },
+    {
+      "name": "signmessagewithname",
+      "description": "Sign a message with the key that owns a name.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Name to sign with."
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": true,
+          "description": "Message to sign."
+        }
+      ],
+      "response": [
+        {
+          "name": "(string)",
+          "type": "string",
+          "description": "Base64 signature. For P2WSH names, includes embedded multisig public keys."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main signmessagewithname myname \"Hello Fistbump\"",
+        "response": "H1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4=="
+      },
+      "notes": "Name must be in CLOSED state."
+    },
+    {
+      "name": "verifymessage",
+      "description": "Verify a signed message against an address.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": true,
+          "description": "Expected signer address."
+        },
+        {
+          "name": "signature",
+          "type": "string",
+          "required": true,
+          "description": "Base64 signature."
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": true,
+          "description": "Original message."
+        }
+      ],
+      "response": [
+        {
+          "name": "(bool)",
+          "type": "bool",
+          "description": "true if valid."
+        }
+      ],
+      "example": {
+        "request": "fbdctl verifymessage fb1q... H1b2c3d4...== \"Hello Fistbump\"",
+        "response": true
+      }
+    },
+    {
+      "name": "verifymessagewithname",
+      "description": "Verify a signed message against the owner of a name.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Name whose owner should have signed."
+        },
+        {
+          "name": "signature",
+          "type": "string",
+          "required": true,
+          "description": "Base64 signature from signmessagewithname."
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": true,
+          "description": "Original message."
+        }
+      ],
+      "response": [
+        {
+          "name": "(bool)",
+          "type": "bool",
+          "description": "true if valid."
+        }
+      ],
+      "example": {
+        "request": "fbdctl verifymessagewithname myname H1b2c3d4...== \"Hello Fistbump\"",
+        "response": true
+      },
+      "notes": "Name must be in CLOSED state. P2WSH signatures embed the multisig pubkeys for wallet-free verification."
+    }
+  ]
+}

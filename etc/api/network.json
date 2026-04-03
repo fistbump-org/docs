@@ -1,0 +1,246 @@
+{
+  "id": "network",
+  "label": "Network",
+  "description": "P2P network info and management.",
+  "methods": [
+    {
+      "name": "getnetworkinfo",
+      "description": "Returns network info.",
+      "wallet": "no",
+      "params": [],
+      "response": [
+        {
+          "name": "version",
+          "type": "int",
+          "description": "Node version number."
+        },
+        {
+          "name": "subversion",
+          "type": "string",
+          "description": "User agent string."
+        },
+        {
+          "name": "protocolversion",
+          "type": "int",
+          "description": "P2P protocol version."
+        },
+        {
+          "name": "localservices",
+          "type": "string",
+          "description": "Advertised service flags (hex)."
+        },
+        {
+          "name": "localrelay",
+          "type": "bool",
+          "description": "Whether the node relays transactions."
+        },
+        {
+          "name": "connections",
+          "type": "int",
+          "description": "Number of connected peers."
+        }
+      ],
+      "example": {
+        "request": "fbdctl getnetworkinfo",
+        "response": {
+          "version": 1,
+          "subversion": "/fbd:0.1.0/",
+          "protocolversion": 1,
+          "localservices": "00000001",
+          "localrelay": true,
+          "connections": 8
+        }
+      }
+    },
+    {
+      "name": "getpeerinfo",
+      "description": "Returns info about each connected peer.",
+      "wallet": "no",
+      "params": [],
+      "response": [
+        {
+          "name": "id",
+          "type": "int",
+          "description": "Peer identifier."
+        },
+        {
+          "name": "addr",
+          "type": "string",
+          "description": "Peer address (ip:port)."
+        },
+        {
+          "name": "services",
+          "type": "string",
+          "description": "Service flags (hex)."
+        },
+        {
+          "name": "servicenames",
+          "type": "string[]",
+          "description": "Service names (NETWORK, BLOOM)."
+        },
+        {
+          "name": "relaytxes",
+          "type": "bool",
+          "description": "Whether the peer relays transactions."
+        },
+        {
+          "name": "lastsend",
+          "type": "int",
+          "description": "Last message sent (unix seconds)."
+        },
+        {
+          "name": "lastrecv",
+          "type": "int",
+          "description": "Last message received (unix seconds)."
+        },
+        {
+          "name": "conntime",
+          "type": "int",
+          "description": "Connection time (unix seconds)."
+        },
+        {
+          "name": "pingtime",
+          "type": "number",
+          "description": "Last ping round-trip in seconds (-1 if never)."
+        },
+        {
+          "name": "minping",
+          "type": "number",
+          "description": "Minimum observed ping in seconds (-1 if never)."
+        },
+        {
+          "name": "version",
+          "type": "int",
+          "description": "Peer protocol version."
+        },
+        {
+          "name": "subver",
+          "type": "string",
+          "description": "Peer user agent."
+        },
+        {
+          "name": "inbound",
+          "type": "bool",
+          "description": "Whether this is an inbound connection."
+        },
+        {
+          "name": "startingheight",
+          "type": "int",
+          "description": "Peer's reported block height at connect time."
+        },
+        {
+          "name": "banscore",
+          "type": "int",
+          "description": "Peer's accumulated ban score."
+        }
+      ],
+      "example": {
+        "request": "fbdctl getpeerinfo",
+        "response": [
+          {
+            "id": 1,
+            "addr": "1.2.3.4:32867",
+            "services": "00000003",
+            "servicenames": [
+              "NETWORK",
+              "BLOOM"
+            ],
+            "relaytxes": true,
+            "lastsend": 1740614500,
+            "lastrecv": 1740614498,
+            "conntime": 1740610000,
+            "pingtime": 0.045,
+            "minping": 0.032,
+            "version": 1,
+            "subver": "/hsd:6.0.0/",
+            "inbound": false,
+            "startingheight": 250400,
+            "banscore": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "addnode",
+      "description": "Connect to a peer.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "addr",
+          "type": "string",
+          "required": true,
+          "description": "Peer address in host:port format."
+        }
+      ],
+      "response": [
+        {
+          "name": "(bool)",
+          "type": "bool",
+          "description": "true on success."
+        }
+      ],
+      "example": {
+        "request": "fbdctl addnode 1.2.3.4:32867",
+        "response": true
+      }
+    },
+    {
+      "name": "disconnectnode",
+      "description": "Disconnect a peer by ID or address.",
+      "wallet": "no",
+      "params": [
+        {
+          "name": "peer",
+          "type": "int | string",
+          "required": true,
+          "description": "Peer ID (int) or address string (host:port)."
+        }
+      ],
+      "response": [
+        {
+          "name": "(bool)",
+          "type": "bool",
+          "description": "true on success."
+        }
+      ],
+      "example": {
+        "request": "fbdctl disconnectnode 3",
+        "response": true
+      }
+    },
+    {
+      "name": "clearbans",
+      "description": "Clear all banned peers.",
+      "wallet": "no",
+      "params": [],
+      "response": [
+        {
+          "name": "(bool)",
+          "type": "bool",
+          "description": "true on success."
+        }
+      ],
+      "example": {
+        "request": "fbdctl clearbans",
+        "response": true
+      }
+    },
+    {
+      "name": "reconnect",
+      "description": "Drop all peer connections and reconnect.",
+      "wallet": "no",
+      "params": [],
+      "response": [
+        {
+          "name": "(bool)",
+          "type": "bool",
+          "description": "true on success."
+        }
+      ],
+      "example": {
+        "request": "fbdctl reconnect",
+        "response": true
+      }
+    }
+  ]
+}

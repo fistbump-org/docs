@@ -1,0 +1,34 @@
+{
+  "id": "batch",
+  "label": "Batch",
+  "description": "Multiple operations in a single transaction.",
+  "methods": [
+    {
+      "name": "sendmany",
+      "description": "Build and broadcast a transaction with multiple covenant operations.",
+      "wallet": "yes",
+      "params": [
+        {
+          "name": "ops",
+          "type": "string",
+          "required": true,
+          "description": "Comma-separated operations. Each operation: action [args...]."
+        }
+      ],
+      "response": [
+        {
+          "name": "txid",
+          "type": "string",
+          "description": "Transaction hash of the combined transaction."
+        }
+      ],
+      "example": {
+        "request": "fbdctl --wallet main sendmany open example, bid other 5.0 10.0, none fb1q... 1.5",
+        "response": {
+          "txid": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"
+        }
+      },
+      "notes": "Actions: open, bid, reveal, redeem, register, update, renew, transfer, finalize, revoke, none. Without a name, reveal/redeem/renew/finalize apply to all eligible names."
+    }
+  ]
+}
