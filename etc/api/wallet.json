@@ -210,12 +210,12 @@
         {
           "name": "balance",
           "type": "int",
-          "description": "Total balance in dollarydoos (includes unconfirmed)."
+          "description": "Total balance in bumps (includes unconfirmed)."
         },
         {
           "name": "spendable",
           "type": "int",
-          "description": "Spendable balance (total minus locked minus immature coinbase) in dollarydoos."
+          "description": "Spendable balance (total minus locked minus immature coinbase) in bumps."
         },
         {
           "name": "m",
@@ -370,12 +370,12 @@
         {
           "name": "spendable",
           "type": "int",
-          "description": "Available to spend (total minus locked minus immature coinbase) in dollarydoos."
+          "description": "Available to spend (total minus locked minus immature coinbase) in bumps."
         },
         {
           "name": "confirmed",
           "type": "int",
-          "description": "Confirmed balance in dollarydoos."
+          "description": "Confirmed balance in bumps."
         },
         {
           "name": "pending",
@@ -465,7 +465,7 @@
         {
           "name": "value",
           "type": "int",
-          "description": "Value in dollarydoos."
+          "description": "Value in bumps."
         },
         {
           "name": "confirmations",
@@ -517,7 +517,7 @@
         {
           "name": "balance",
           "type": "int",
-          "description": "Address balance in dollarydoos."
+          "description": "Address balance in bumps."
         },
         {
           "name": "used",
@@ -587,12 +587,12 @@
         {
           "name": "sent",
           "type": "int",
-          "description": "Amount sent (dollarydoos)."
+          "description": "Amount sent (bumps)."
         },
         {
           "name": "received",
           "type": "int",
-          "description": "Amount received (dollarydoos)."
+          "description": "Amount received (bumps)."
         },
         {
           "name": "net",
@@ -602,7 +602,7 @@
         {
           "name": "fee",
           "type": "int",
-          "description": "Fee paid (dollarydoos)."
+          "description": "Fee paid (bumps)."
         },
         {
           "name": "timestamp",

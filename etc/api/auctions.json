@@ -80,12 +80,12 @@
         {
           "name": "bid",
           "type": "int",
-          "description": "Bid amount in dollarydoos."
+          "description": "Bid amount in bumps."
         },
         {
           "name": "lockup",
           "type": "int",
-          "description": "Lockup amount in dollarydoos."
+          "description": "Lockup amount in bumps."
         }
       ],
       "example": {

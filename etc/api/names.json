@@ -49,12 +49,12 @@
         {
           "name": "value",
           "type": "int",
-          "description": "Locked value in dollarydoos."
+          "description": "Locked value in bumps."
         },
         {
           "name": "highest",
           "type": "int",
-          "description": "Highest bid amount in dollarydoos."
+          "description": "Highest bid amount in bumps."
         },
         {
           "name": "restriction",
@@ -89,7 +89,7 @@
         {
           "name": "minimumBid",
           "type": "int",
-          "description": "Minimum bid amount in dollarydoos at the current height."
+          "description": "Minimum bid amount in bumps at the current height."
         },
         {
           "name": "auctionSubdomains",
@@ -376,7 +376,7 @@
         {
           "name": "value",
           "type": "int",
-          "description": "Locked value in dollarydoos."
+          "description": "Locked value in bumps."
         },
         {
           "name": "covenantType",
@@ -427,12 +427,12 @@
         {
           "name": "value",
           "type": "int",
-          "description": "Actual bid value in dollarydoos."
+          "description": "Actual bid value in bumps."
         },
         {
           "name": "lockup",
           "type": "int",
-          "description": "Total lockup amount in dollarydoos."
+          "description": "Total lockup amount in bumps."
         },
         {
           "name": "height",
@@ -544,7 +544,7 @@
         {
           "name": "value",
           "type": "int",
-          "description": "Recovered bid value in dollarydoos."
+          "description": "Recovered bid value in bumps."
         }
       ],
       "example": {
@@ -654,7 +654,7 @@
         {
           "name": "lockup",
           "type": "int",
-          "description": "Lockup amount in dollarydoos."
+          "description": "Lockup amount in bumps."
         },
         {
           "name": "blindHash",
@@ -669,7 +669,7 @@
         {
           "name": "revealedValue",
           "type": "int",
-          "description": "Revealed bid value in dollarydoos (only if revealed)."
+          "description": "Revealed bid value in bumps (only if revealed)."
         },
         {
           "name": "revealTxHash",

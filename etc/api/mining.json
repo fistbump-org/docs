@@ -55,7 +55,7 @@
         {
           "name": "(int)",
           "type": "int",
-          "description": "Minimum relay fee rate in dollarydoos per kvB."
+          "description": "Minimum relay fee rate in bumps per kvB."
         }
       ],
       "example": {
