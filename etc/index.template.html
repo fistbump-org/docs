@@ -41,6 +41,8 @@
     <a class="nav-link guide-link" href="#auth">Auth</a>
     <a class="nav-link guide-link" href="#wallets">Wallets</a>
     <a class="nav-link guide-link" href="#subdomains">Subdomains</a>
+    <a class="nav-link guide-link" href="#records">Records</a>
+    <a class="nav-link guide-link" href="#extension">Browser Extension</a>
     <div class="nav-divider"></div>
   </nav>
 </aside>
@@ -229,6 +231,173 @@
   <span class="key">"auctionSubdomains"</span>: <span class="cm">false</span>,
   ...
 }</code></div></div>
+
+<h2 id="records">Records</h2>
+<p>Resource data passed to <code>sendupdate</code>, <code>sendregister</code>, and <code>sendmany</code> is a JSON object with a <code>records</code> array. Each record has a <code>type</code> field and type-specific fields.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">fbdctl</span> <span class="flag">--wallet</span> <span class="val">main</span> sendupdate myname <span class="str">'{"records":[...]}'</span></code></div></div>
+
+<h3>A</h3>
+<p>IPv4 address.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"A"</span>, <span class="key">"address"</span>: <span class="str">"1.2.3.4"</span>}</code></div></div>
+
+<h3>AAAA</h3>
+<p>IPv6 address.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"AAAA"</span>, <span class="key">"address"</span>: <span class="str">"2001:db8::1"</span>}</code></div></div>
+
+<h3>CNAME</h3>
+<p>Canonical name (alias).</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"CNAME"</span>, <span class="key">"target"</span>: <span class="str">"alias.example.com."</span>}</code></div></div>
+
+<h3>NS</h3>
+<p>Nameserver delegation (without glue).</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"NS"</span>, <span class="key">"ns"</span>: <span class="str">"ns1.example.com."</span>}</code></div></div>
+
+<h3>GLUE4</h3>
+<p>Nameserver with an IPv4 glue address.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"GLUE4"</span>, <span class="key">"ns"</span>: <span class="str">"ns1.example.com."</span>, <span class="key">"address"</span>: <span class="str">"1.2.3.4"</span>}</code></div></div>
+
+<h3>GLUE6</h3>
+<p>Nameserver with an IPv6 glue address.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"GLUE6"</span>, <span class="key">"ns"</span>: <span class="str">"ns1.example.com."</span>, <span class="key">"address"</span>: <span class="str">"2001:db8::1"</span>}</code></div></div>
+
+<h3>SYNTH4</h3>
+<p>Synthetic nameserver from an IPv4 address. The NS name is generated automatically at serve time.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"SYNTH4"</span>, <span class="key">"address"</span>: <span class="str">"1.2.3.4"</span>}</code></div></div>
+
+<h3>SYNTH6</h3>
+<p>Synthetic nameserver from an IPv6 address. The NS name is generated automatically at serve time.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"SYNTH6"</span>, <span class="key">"address"</span>: <span class="str">"2001:db8::1"</span>}</code></div></div>
+
+<h3>MX</h3>
+<p>Mail exchange. <code>preference</code> is the priority (lower = higher priority, 0&ndash;65535).</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"MX"</span>, <span class="key">"preference"</span>: <span class="val">10</span>, <span class="key">"exchange"</span>: <span class="str">"mail.example.com."</span>}</code></div></div>
+
+<h3>TXT</h3>
+<p>Text record. <code>txt</code> is an array of strings (each max 255 bytes).</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"TXT"</span>, <span class="key">"txt"</span>: [<span class="str">"v=spf1 include:_spf.example.com -all"</span>]}</code></div></div>
+
+<h3>DS</h3>
+<p>DNSSEC delegation signer. <code>algorithm</code>: 8 (RSA/SHA-256), 13 (ECDSA P-256), 14 (ECDSA P-384), 15 (Ed25519), 16 (Ed448). <code>digestType</code>: 1 (SHA-1), 2 (SHA-256), 4 (SHA-384). <code>digest</code> is hex-encoded.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"DS"</span>, <span class="key">"keyTag"</span>: <span class="val">12345</span>, <span class="key">"algorithm"</span>: <span class="val">13</span>,
+ <span class="key">"digestType"</span>: <span class="val">2</span>, <span class="key">"digest"</span>: <span class="str">"a1b2c3..."</span>}</code></div></div>
+
+<h3>TLSA</h3>
+<p>DANE certificate association. <code>protocol</code>: 6 (TCP), 17 (UDP), 132 (SCTP). <code>usage</code>: 0 (PKIX-TA), 1 (PKIX-EE), 2 (DANE-TA), 3 (DANE-EE). <code>selector</code>: 0 (full cert), 1 (SubjectPublicKeyInfo). <code>matchingType</code>: 0 (exact), 1 (SHA-256), 2 (SHA-512). <code>certificate</code> is hex-encoded.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"TLSA"</span>, <span class="key">"port"</span>: <span class="val">443</span>, <span class="key">"protocol"</span>: <span class="val">6</span>,
+ <span class="key">"usage"</span>: <span class="val">3</span>, <span class="key">"selector"</span>: <span class="val">1</span>, <span class="key">"matchingType"</span>: <span class="val">1</span>,
+ <span class="key">"certificate"</span>: <span class="str">"30820122..."</span>}</code></div></div>
+<p>The DNS server synthesizes the standard DANE owner name (<code>_443._tcp.myname</code>) at serve time from the <code>port</code> and <code>protocol</code> fields.</p>
+
+<h3>CAA</h3>
+<p>Certification authority authorization. <code>flags</code>: 0 or 128. <code>tag</code>: <code>issue</code>, <code>issuewild</code>, or <code>iodef</code>.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"CAA"</span>, <span class="key">"flags"</span>: <span class="val">0</span>, <span class="key">"tag"</span>: <span class="str">"issue"</span>, <span class="key">"value"</span>: <span class="str">"letsencrypt.org"</span>}</code></div></div>
+
+<h3>WALLET</h3>
+<p>Fistbump payment address. Associates a receive address with the name for on-chain payments.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"WALLET"</span>, <span class="key">"address"</span>: <span class="str">"fb1q..."</span>}</code></div></div>
+
+<h3>SUB</h3>
+<p>Inline subdomain records. <code>name</code> is a single label (1&ndash;63 bytes). <code>records</code> is a nested array of records. See <a href="#subdomains">Subdomains</a> for details.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code>{<span class="key">"type"</span>: <span class="str">"SUB"</span>, <span class="key">"name"</span>: <span class="str">"www"</span>,
+ <span class="key">"records"</span>: [{<span class="key">"type"</span>: <span class="str">"A"</span>, <span class="key">"address"</span>: <span class="str">"1.2.3.4"</span>}]}</code></div></div>
+
+<h3>Example</h3>
+<p>A complete <code>sendupdate</code> setting an A record, mail exchange, TXT for SPF, and a TLSA record:</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">fbdctl</span> <span class="flag">--wallet</span> <span class="val">main</span> sendupdate myname <span class="str">'{
+  "records": [
+    {"type": "A", "address": "1.2.3.4"},
+    {"type": "MX", "preference": 10, "exchange": "mail.example.com."},
+    {"type": "TXT", "txt": ["v=spf1 include:_spf.example.com -all"]},
+    {"type": "TLSA", "port": 443, "protocol": 6, "usage": 3,
+     "selector": 1, "matchingType": 1, "certificate": "30820122..."}
+  ]
+}'</span></code></div></div>
+<p>The same records can be set in a batch with <code>sendmany</code>:</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="t-prompt">$</span><span class="cmd">fbdctl</span> <span class="flag">--wallet</span> <span class="val">main</span> sendmany <span class="str">update myname '{"records":[{"type":"A","address":"1.2.3.4"}]}'</span></code></div></div>
+
+<div class="note">
+  Hostnames (<code>ns</code>, <code>target</code>, <code>exchange</code>) use DNS format: labels 1&ndash;63 bytes, alphanumeric plus hyphens, no leading or trailing hyphens. Trailing dot is optional. Names with <code>auctionSubdomains</code> enabled cannot use delegation records (NS, DS, GLUE4, GLUE6, SYNTH4, SYNTH6).
+</div>
+
+<h2 id="extension">Browser Extension</h2>
+<p>The Fistbump browser extension exposes a <code>window.fistbump</code> API to web pages, letting dApps connect to the user's wallet, send transactions, and sign messages. It communicates with the Fistbump desktop wallet via Chrome native messaging &mdash; no HTTP, no localhost ports.</p>
+<p>Available for Chrome, Chromium, Brave, Edge, Arc, Vivaldi, and Firefox. Requires the Fistbump desktop wallet to be installed.</p>
+
+<h3>Install</h3>
+<p>Load the extension in developer mode:</p>
+
+<h4>Chrome / Chromium-based browsers</h4>
+<ol>
+  <li>Open <code>chrome://extensions</code></li>
+  <li>Toggle <strong>Developer mode</strong> on (top-right)</li>
+  <li>Click <strong>Load unpacked</strong> and select the extension directory</li>
+</ol>
+
+<h4>Firefox</h4>
+<ol>
+  <li>Open <code>about:debugging#/runtime/this-firefox</code></li>
+  <li>Click <strong>Load Temporary Add-on</strong></li>
+  <li>Select <code>manifest.json</code> from the extension directory</li>
+</ol>
+<p>The Fistbump icon appears in the toolbar. Clicking it opens a popup showing the extension version and a live indicator for whether the wallet is running.</p>
+
+<h3>API</h3>
+<p>All methods are available on <code>window.fistbump</code> and return promises. You can detect the extension with <code>window.fistbump.isFistbump</code>.</p>
+
+<h4>connect</h4>
+<p>Request wallet access and get the user's address. The first call from a new origin shows a confirmation modal in the wallet. Subsequent calls from the same origin skip the prompt.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="cm">// connect to the wallet</span>
+<span class="key">const</span> result = <span class="key">await</span> window.fistbump.<span class="cmd">connect</span>();
+<span class="cm">// → { address: "fb1...", origin: "https://example.com" }</span></code></div></div>
+
+<h4>isConnected</h4>
+<p>Check whether the current origin is already approved, without prompting the user.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="key">const</span> connected = <span class="key">await</span> window.fistbump.<span class="cmd">isConnected</span>();
+<span class="cm">// → true or false</span></code></div></div>
+
+<h4>sendTx</h4>
+<p>Build, sign, and broadcast a transaction. The <code>to</code> field accepts a raw <code>fb1&hellip;</code> address or a Fistbump name &mdash; the wallet resolves names automatically. A review modal shows the recipient, fee, and total before signing.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="cm">// send by name</span>
+<span class="key">const</span> tx = <span class="key">await</span> window.fistbump.<span class="cmd">sendTx</span>({ <span class="key">to</span>: <span class="str">'eskimo'</span>, <span class="key">amount</span>: <span class="val">1.5</span> });
+<span class="cm">// → { txid: "a1b2c3..." }</span>
+
+<span class="cm">// send by address</span>
+<span class="key">const</span> tx = <span class="key">await</span> window.fistbump.<span class="cmd">sendTx</span>({ <span class="key">to</span>: <span class="str">'fb1q...'</span>, <span class="key">amount</span>: <span class="val">0.25</span> });
+<span class="cm">// → { txid: "d4e5f6..." }</span></code></div></div>
+
+<h4>signMessage</h4>
+<p>Sign an arbitrary message. Without a <code>name</code> option, signs with the wallet's receive address. With <code>name</code>, signs with the key that owns that Fistbump name &mdash; the wallet verifies ownership before showing the review modal.</p>
+<div class="fb-terminal"><div class="fb-terminal-bar"><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span><span class="fb-terminal-dot"></span></div><div class="fb-terminal-body"><code><span class="cm">// sign with wallet address</span>
+<span class="key">const</span> sig = <span class="key">await</span> window.fistbump.<span class="cmd">signMessage</span>(<span class="str">'hello'</span>);
+<span class="cm">// → { signature: "...", address: "fb1..." }</span>
+
+<span class="cm">// sign as a Fistbump name</span>
+<span class="key">const</span> sig = <span class="key">await</span> window.fistbump.<span class="cmd">signMessage</span>(<span class="str">'hello'</span>, { <span class="key">name</span>: <span class="str">'eskimo'</span> });
+<span class="cm">// → { signature: "...", name: "eskimo" }</span></code></div></div>
+
+<h3>How it works</h3>
+<p>The extension uses a four-layer message flow to reach the desktop wallet:</p>
+<table>
+  <thead><tr><th>Layer</th><th>Component</th><th>Transport</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>dApp calls <code>window.fistbump</code></td><td><code>postMessage</code></td></tr>
+    <tr><td>2</td><td>Content script relays to service worker</td><td><code>chrome.runtime.sendMessage</code></td></tr>
+    <tr><td>3</td><td>Service worker connects to native host</td><td><code>chrome.runtime.connectNative</code></td></tr>
+    <tr><td>4</td><td>Bridge forwards to wallet over local socket</td><td>Unix socket / named pipe</td></tr>
+  </tbody>
+</table>
+<p>If the wallet isn't running, the bridge launches it automatically and waits for the socket to come up before forwarding the request.</p>
+
+<h3>Security</h3>
+<ul>
+  <li>The extension's only permission is <code>nativeMessaging</code> &mdash; it cannot read page data or make network requests</li>
+  <li>The wallet has no HTTP listener &mdash; there is no localhost surface for other processes to reach</li>
+  <li>The local socket (<code>~/.fistbump/extension.sock</code>) is created with mode <code>0600</code> &mdash; only the current user can connect</li>
+  <li>Chrome verifies the extension's stable ID before spawning the native host &mdash; other extensions cannot impersonate it</li>
+  <li><code>sendTx</code> and <code>signMessage</code> always show a review modal, even for previously approved origins</li>
+  <li>Name signing verifies wallet ownership via <code>getnameinfo</code> + <code>validateaddress</code> before prompting</li>
+  <li>Approved origins are stored in <code>~/.fistbump/settings.json</code> and can be revoked via the wallet</li>
+</ul>
 
 </div>
 
